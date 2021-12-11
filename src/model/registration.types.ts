@@ -1,5 +1,5 @@
 import { IsDefined, MinLength } from 'class-validator';
-import { ILogin } from './login';
+import { ILogin } from './login.types';
 
 
 export class IReg extends ILogin {

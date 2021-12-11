@@ -2,12 +2,13 @@
 // export const getUsers = db.query('SELECT * FROM meetings.users');
 import { db } from '../index';
 import { forkJoin, map } from 'rxjs';
-import { IMeetings } from '../model/meetings';
+import { IMeetings } from '../model/meetings.types';
 
-
+// =====================================================================================================================
+/** Get last generated value for sync table*/
 export const lastValue$ = () => db.query(' select (last_value+1) as num  from meetings."meetings_meetingId_seq"');
-// =======================================================================================================================================
-/** get meeting available to user*/
+// =====================================================================================================================
+/** Get meetings which are available to user*/
 export const meetings$ = (userId:string) => {
   const result = [];
   let lastMeetingId = 0;
@@ -45,7 +46,8 @@ export const meetings$ = (userId:string) => {
     return result;
   }));
 };
-// =======================================================================================================================================
+// =====================================================================================================================
+/** Meeting creation*/
 export const createMeetings$ = (data: IMeetings, newMeetingId:number) => {
 
   const results = [];
@@ -82,3 +84,4 @@ export const deleteMeeting$ = (meetingId:number) => {
     return forkJoin(results);
   });
 };
+// =====================================================================================================================

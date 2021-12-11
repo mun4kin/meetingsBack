@@ -4,12 +4,12 @@ import {
 import 'reflect-metadata';
 import {
   createMeetings$, deleteMeeting$, lastValue$, meetings$
-} from '../db/meetings-db';
+} from '../db/meetings.db';
 import { lastValueFrom } from 'rxjs';
 
-import { Authentication } from '../middleware/middleware';
+import { Authentication } from '../middleware/midAuthentication';
 import httpContext from 'express-http-context';
-import { IMeetings } from '../model/meetings';
+import { IMeetings } from '../model/meetings.types';
 
 @Controller()
 @JsonController('/meeting')

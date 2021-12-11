@@ -1,4 +1,4 @@
-import { IReg } from './registration';
+import { IReg } from './registration.types';
 
 export interface IMeetings {
   meetingId:number;

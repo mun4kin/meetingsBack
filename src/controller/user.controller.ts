@@ -3,15 +3,15 @@ import {
   Controller, JsonController, Post, UseBefore
 } from 'routing-controllers';
 import 'reflect-metadata';
-import { IReg } from '../model/registration';
+import { IReg } from '../model/registration.types';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import {
   allUsers$, registration$, userByEmail$
-} from '../db/user-db';
+} from '../db/user.db';
 import * as argon2 from 'argon2';
-import { ILogin } from '../model/login';
+import { ILogin } from '../model/login.types';
 import * as jwt from 'jsonwebtoken';
-import { Authentication } from '../middleware/middleware';
+import { Authentication } from '../middleware/midAuthentication';
 import httpContext from 'express-http-context';
 
 @Controller()

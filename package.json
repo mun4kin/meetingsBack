@@ -9,8 +9,6 @@
     "prestart": "npm run build",
     "watch": "ts-node-dev --respawn --transpile-only src/index.ts",
     "prebuild": "npm run lint",
-    "lint:fix": "eslint --cache --ext .ts . --fix",
-    "lint": "eslint --cache --ext .ts .",
     "commit": "git add . && node ./node_modules/cz-customizable/standalone.js"
   },
   "repository": {

@@ -1,9 +1,9 @@
 import {
-  Body, Controller, Get, JsonController, Post, UseBefore
+  Body, Controller, Get, JsonController, Post, Put, UseBefore
 } from 'routing-controllers';
 import 'reflect-metadata';
 import {
-  createMeetings$, deleteMeeting$, lastValue$, meetings$
+  createMeetings$, deleteMeeting$, lastValue$, meetings$, updateMeeting$
 } from '../db/meetings.db';
 import { lastValueFrom } from 'rxjs';
 
@@ -34,9 +34,12 @@ export class MeetingController {
   @Post('/delete')
   @UseBefore(Authentication)
   async deleteMeetings(@Body() data: IMeetings) {
-
     return await lastValueFrom(deleteMeeting$(data.meetingId));
   }
-
+  @Put('/update')
+  @UseBefore(Authentication)
+  async updateMeetings(@Body() data: IMeetings) {
+    return await lastValueFrom(updateMeeting$(data));
+  }
 
 }

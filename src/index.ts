@@ -39,5 +39,5 @@ useExpressServer(app, {
   middlewares: [GlobalErrorHandler],
   defaultErrorHandler: false
 });
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(port, () => console.log(`Running on port http://localhost:${port}/`));

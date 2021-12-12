@@ -69,6 +69,8 @@ export const createMeetings$ = (data: IMeetings, newMeetingId:number) => {
     return forkJoin(results);
   });
 };
+// =====================================================================================================================
+/** Meeting deletion*/
 export const deleteMeeting$ = (meetingId:number) => {
   const results = [];
   return db.tx((t) => {
@@ -81,6 +83,31 @@ export const deleteMeeting$ = (meetingId:number) => {
         RETURNING TRUE;`);
     results.push(deleteMUsers);
 
+    return forkJoin(results);
+  });
+};
+// =====================================================================================================================
+/** Meeting update*/
+export const updateMeeting$ = (meeting:IMeetings) => {
+  const results = [];
+  return db.tx((t) => {
+    const updateMeeting$ = t.query(`
+      UPDATE meetings.meetings 
+      SET name='${meeting.name}', datetime='${meeting.datetime}',description='${meeting.description}'
+      WHERE "meetingId"='${meeting.meetingId}'
+      RETURNING TRUE;`);
+    results.push(updateMeeting$);
+    const deleteMUsers = t.query(`
+      delete from meetings."mUsers" where "meetingId"=${meeting.meetingId}
+      RETURNING TRUE;`);
+    results.push(deleteMUsers);
+    meeting.users.forEach((item) => {
+      const insertUser = t.query(`
+        INSERT INTO meetings."mUsers" ("meetingId", "userId", "isCreator") 
+        VALUES ('${meeting.meetingId}','${item.userId}','${!!item.isCreator}') 
+        RETURNING TRUE;`);
+      results.push(insertUser);
+    });
     return forkJoin(results);
   });
 };

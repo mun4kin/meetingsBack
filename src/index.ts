@@ -39,5 +39,22 @@ useExpressServer(app, {
   middlewares: [GlobalErrorHandler],
   defaultErrorHandler: false
 });
-app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.listen(port, () => console.log(`Running on port http://localhost:${port}/`));
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      version: '1.0.0',
+      title: 'MeetingsAPI',
+      description: 'Customer API Information',
+      contact: {
+        name: 'Pugachev Anton' +
+            ''
+      },
+      servers: ['http://localhost:5000']
+    }
+
+  },
+  apis: ['./src/controller/*.ts', './src/model/*.ts']
+};
+// const swaggerDocument = swaggerJSDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.listen(port, () => console.log(`Running on port http://localhost:${port}/api-docs`));

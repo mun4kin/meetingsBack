@@ -1,8 +1,12 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "test API",
-    "version": "v1"
+    "title": "MeetingsAPI",
+    "description": "Customer API Information",
+    "version": "v1",
+    "contact": {
+      "name": "Pugachev Anton"
+    }
   },
   "servers": [
     {
@@ -11,78 +15,233 @@
   ],
   "tags": [
     {
-      "name": "API functions",
-      "description": "API functions of our application"
+      "name": "Users Controller",
+      "description": "API functions"
+    },
+    {
+      "name": "Meetings Controller",
+      "description": "API functions"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
     }
   ],
   "paths": {
-    "/users/{id}": {
-      "get": {
-        "summary": "returns simple answer from get",
-        "tags": [
-          "API functions"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "simple parameter",
-            "schema": {
-              "type": "string",
-              "example": "1"
-            }
-          }
-        ],
-        "description": "parameter id just for test",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "document": {
-                "schema": {
-                  "type": "string",
-                  "example": "some text"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/users/login": {
       "post": {
-        "summary": "returns simple answer from post",
+        "summary": "The method checks your login and password and sends auth token.",
         "tags": [
-          "API functions"
+          "Users Controller"
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Info"
+                "$ref": "#/components/schemas/ILogin"
               },
               "example": {
-                "country": "Russia",
-                "city": "Spb"
+                "email": "10@gmail.com",
+                "password": "10@gmail.com"
               }
             }
           }
         },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "simple parameter",
-            "schema": {
-              "type": "string",
-              "example": "1"
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "421": {
+            "description": "Incorrect password"
+          },
+          "420": {
+            "description": "Unknown user e-mail"
+          }
+        }
+      }
+    },
+    "/users/registration": {
+      "post": {
+        "summary": "The method registers new users.",
+        "tags": [
+          "Users Controller"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IReg"
+              },
+              "example": {
+                "email": "11@gmail.com",
+                "firstName": "Anton",
+                "secondName": "Anton",
+                "password": "11@gmail.com"
+              }
             }
           }
-        ],
-        "description": "parameter id just for test",
+        },
         "responses": {
-          "204": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "User already exists"
+          }
+        }
+      }
+    },
+    "/users/all": {
+      "post": {
+        "summary": "The method sends all users with search.(Maximum 4)",
+        "tags": [
+          "Users Controller"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "search": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "search": "@gmail.com"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/meeting/all": {
+      "get": {
+        "summary": "The method returns all meetings for user",
+        "tags": [
+          "Meetings Controller"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/meeting/create": {
+      "post": {
+        "summary": "The method creates new meeting",
+        "tags": [
+          "Meetings Controller"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IMeetings"
+              },
+              "example": {
+                "name": "Test meeting",
+                "datetime": 1639326574800,
+                "description": "Description of the meeting",
+                "users": [
+                  {
+                    "userId": 80,
+                    "isCreator": true
+                  },
+                  {
+                    "userId": 76
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/meeting/delete": {
+      "post": {
+        "summary": "The method delete meeting",
+        "tags": [
+          "Meetings Controller"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "meetingId": {
+                    "type": "number"
+                  }
+                }
+              },
+              "example": {
+                "meetingId": 23
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/meeting/update": {
+      "put": {
+        "summary": "The method updates exists meeting by ID",
+        "tags": [
+          "Meetings Controller"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IMeetings"
+              },
+              "example": {
+                "name": "Test meeting new",
+                "meetingId": 22,
+                "datetime": 1639326574800,
+                "description": "Description of the meeting",
+                "users": [
+                  {
+                    "userId": 80,
+                    "isCreator": true
+                  },
+                  {
+                    "userId": 76
+                  },
+                  {
+                    "userId": 77
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
             "description": "OK"
           }
         }
@@ -90,15 +249,80 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
-      "Info": {
+      "ILogin": {
         "type": "object",
         "properties": {
-          "country": {
+          "email": {
             "type": "string"
           },
-          "city": {
+          "password": {
             "type": "string"
+          }
+        }
+      },
+      "IReg": {
+        "type": "object",
+        "required": [
+          "email",
+          "firstName",
+          "password",
+          "secondName"
+        ],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "isCreator": {
+            "type": "boolean"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "secondName": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "IMeetings": {
+        "type": "object",
+        "required": [
+          "name",
+          "datetime",
+          "users"
+        ],
+        "properties": {
+          "meetingId": {
+            "type": "number",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "datetime": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IReg"
+            }
           }
         }
       }

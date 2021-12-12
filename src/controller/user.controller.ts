@@ -13,7 +13,13 @@ import { ILogin } from '../model/login.types';
 import * as jwt from 'jsonwebtoken';
 import { Authentication } from '../middleware/midAuthentication';
 import httpContext from 'express-http-context';
-
+/**
+ * @swagger
+ * tags:
+ *   - name: API functions
+ *     description: >-
+ *       User Controller
+ * */
 @Controller()
 @JsonController('/users')
 export class UserController {

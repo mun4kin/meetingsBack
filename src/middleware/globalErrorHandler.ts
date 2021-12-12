@@ -13,10 +13,12 @@ const errors:Record<string, string> = {
 export class GlobalErrorHandler implements ExpressErrorMiddlewareInterface {
   error (error: any, request: any, response: any, next: () => any) {
     const frontendText = errors[error.code] || errors[error.message] || errors[0];
-    console.error(error);
-    response.status(500).json({
+
+    const t = !isNaN(+error.message) ? +error.message : 500;
+    response.status(t).json({
       ...error,
-      detail: error?.detail || frontendText
+      detail: frontendText,
+      datailOld: error?.detail
     });
     next();
   }

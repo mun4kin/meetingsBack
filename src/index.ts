@@ -29,7 +29,7 @@ export const db = new PgRx({
 const app: Express = express();
 app.use(bodyParser.json());
 app.use(httpContext.middleware);
-app.use(cors({ origin: 'http://localhost:8888' }));
+app.use(cors());
 
 
 useExpressServer(app, {

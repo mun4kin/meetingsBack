@@ -1,4 +1,6 @@
 Test project "Meeting planing"
+
+https://meetings-back-new.herokuapp.com/api-docs/#/
 ## How to start
  
 ```

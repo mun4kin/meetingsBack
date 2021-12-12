@@ -13,9 +13,7 @@ import { MeetingController } from './controller/meeting.controller';
 
 dotenv.config();
 
-
-const port = process.env.PORT;
-
+const port = process.env.PORT || 3000;
 // =====================================================================================================================
 /** db connection*/
 export const db = new PgRx({
@@ -39,22 +37,7 @@ useExpressServer(app, {
   middlewares: [GlobalErrorHandler],
   defaultErrorHandler: false
 });
-const swaggerOptions = {
-  swaggerDefinition: {
-    info: {
-      version: '1.0.0',
-      title: 'MeetingsAPI',
-      description: 'Customer API Information',
-      contact: {
-        name: 'Pugachev Anton' +
-            ''
-      },
-      servers: ['http://localhost:5000']
-    }
 
-  },
-  apis: ['./src/controller/*.ts', './src/model/*.ts']
-};
 // const swaggerDocument = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(port, () => console.log(`Running on port http://localhost:${port}/api-docs`));

@@ -29,6 +29,7 @@ export const db = new PgRx({
 const app: Express = express();
 app.use(bodyParser.json());
 app.use(httpContext.middleware);
+
 app.use(cors());
 
 
@@ -38,6 +39,5 @@ useExpressServer(app, {
   defaultErrorHandler: false
 });
 
-// const swaggerDocument = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(port, () => console.log(`Running on port http://localhost:${port}/api-docs`));

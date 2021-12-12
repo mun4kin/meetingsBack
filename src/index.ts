@@ -12,7 +12,7 @@ import cors from 'cors';
 import { MeetingController } from './controller/meeting.controller';
 
 dotenv.config();
-
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 const port = process.env.PORT || 3000;
 // =====================================================================================================================
 /** db connection*/

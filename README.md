@@ -1,4 +1,6 @@
 Test project "Meeting planing"
+
+https://meetings-back-new.herokuapp.com/api-docs/#/
 ## How to start
  
 ```
@@ -10,8 +12,8 @@ yarn watch
 1. routing-controllers
 2. pg-reactive
 3. argon2 && jsonwebtoken
-4. RxJs
-5. swagger
+4. RxJs 
+5. Swagger
 
 https://www.chromatic.com/library?appId=615d57bb546a6c004a22a565
 

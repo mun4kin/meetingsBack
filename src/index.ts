@@ -12,10 +12,8 @@ import cors from 'cors';
 import { MeetingController } from './controller/meeting.controller';
 
 dotenv.config();
-
-
-const port = process.env.PORT;
-
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+const port = process.env.PORT || 3000;
 // =====================================================================================================================
 /** db connection*/
 export const db = new PgRx({
@@ -31,7 +29,8 @@ export const db = new PgRx({
 const app: Express = express();
 app.use(bodyParser.json());
 app.use(httpContext.middleware);
-app.use(cors({ origin: 'http://localhost:8888' }));
+
+app.use(cors());
 
 
 useExpressServer(app, {
@@ -39,22 +38,6 @@ useExpressServer(app, {
   middlewares: [GlobalErrorHandler],
   defaultErrorHandler: false
 });
-const swaggerOptions = {
-  swaggerDefinition: {
-    info: {
-      version: '1.0.0',
-      title: 'MeetingsAPI',
-      description: 'Customer API Information',
-      contact: {
-        name: 'Pugachev Anton' +
-            ''
-      },
-      servers: ['http://localhost:5000']
-    }
 
-  },
-  apis: ['./src/controller/*.ts', './src/model/*.ts']
-};
-// const swaggerDocument = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(port, () => console.log(`Running on port http://localhost:${port}/api-docs`));

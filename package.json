@@ -33,10 +33,8 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-unused-imports": "^2.0.0",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.2",
-    "jest": "^27.4.5",
-    "ts-jest": "^27.1.1",
-    "supertest": "^6.1.6"
+    "typescript": "^4.5.2"
+
   },
   "dependencies": {
     "swagger-ui-express": "^4.2.0",

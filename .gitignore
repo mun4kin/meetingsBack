@@ -12,6 +12,7 @@
 **/.idea
 .idea
 dist
+
 # misc
 .DS_Store
 .env.local

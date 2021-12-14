@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test:jest": "jest",
-    "build": "tsc",
-    "start": " cd dist && node index.js",
+    "start": "tsc && cd dist && node index.js",
     "watch": "ts-node-dev --respawn --transpile-only src/index.ts",
     "commit": "git add . && node ./node_modules/cz-customizable/standalone.js"
   },

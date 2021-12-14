@@ -4,7 +4,7 @@
   "description": "test project",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest",
+    "test:jest": "jest",
     "build": "tsc",
     "start": "node .",
     "watch": "ts-node-dev --respawn --transpile-only src/index.ts",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mun4kin/meetings.git"
+    "url": "git+https://github.com/mun4kin/meetings-back.git"
   },
   "author": "",
   "license": "ISC",

@@ -9,4 +9,5 @@ export class ILogin {
     password?:string;
   userId?:number;
   isCreator?:boolean;
+  userEmail?:string;
 }

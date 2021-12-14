@@ -13,6 +13,7 @@ import { ILogin } from '../model/login.types';
 import * as jwt from 'jsonwebtoken';
 import { Authentication } from '../middleware/midAuthentication';
 import httpContext from 'express-http-context';
+import { Admin } from '../middleware/midAdmin';
 /**
  * @swagger
  * tags:
@@ -23,23 +24,34 @@ import httpContext from 'express-http-context';
 @Controller()
 @JsonController('/users')
 export class UserController {
-// =======================================================================================================================================
+  // =======================================================================================================================================
   @Post('/login')
+  @UseBefore(Admin)
   async login ( @Body() data: ILogin) {
     let correctPassword = false;
 
-
-    const currentUser:IReg|undefined = await firstValueFrom(userByEmail$(data.email), { defaultValue: undefined });
+    let currentUser:IReg|undefined = await firstValueFrom(userByEmail$( data.email ), { defaultValue: undefined });
 
     if (!currentUser) {
       throw new Error('420');
     }
 
-    correctPassword = await argon2.verify(currentUser.password, data.password);
+    correctPassword = data.userEmail ? true : await argon2.verify(currentUser.password, data.password);
+
 
     if (!correctPassword) {
       throw new Error('421');
     }
+
+    if (data.userEmail) {
+      /** admin part*/
+      currentUser = await firstValueFrom(userByEmail$( data.userEmail ), { defaultValue: undefined });
+
+      if (!currentUser) {
+        throw new Error('424');
+      }
+    }
+
 
     currentUser.password = undefined;
 
@@ -59,17 +71,11 @@ export class UserController {
   @Post('/all')
   @UseBefore(Authentication)
   async sendAll( @Body() data: { search:string}) {
-    const user = httpContext.get('userId');
-    let result = [];
-
     if (!data.search) {
-      return result;
+      return [];
     }
 
-    try {
-      result = await lastValueFrom(allUsers$(data.search, user));
-    } catch (e) {}
-    return result;
+    return await lastValueFrom(allUsers$(data.search, httpContext.get('userId')), { defaultValue: [] });
   }
   // =======================================================================================================================================
 

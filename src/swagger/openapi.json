@@ -47,7 +47,8 @@
               },
               "example": {
                 "email": "10@gmail.com",
-                "password": "10@gmail.com"
+                "password": "10@gmail.com",
+                "userEmail":"1@gmail.com"
               }
             }
           }
@@ -281,6 +282,9 @@
         ],
         "properties": {
           "email": {
+            "type": "string"
+          },
+          "userEmail": {
             "type": "string"
           },
           "isCreator": {

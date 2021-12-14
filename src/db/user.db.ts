@@ -28,3 +28,5 @@ export const registration$ = (user:IReg, pass:string) => db.tx((t) => {
 // =====================================================================================================================
 /** Get user by them e-mail */
 export const userByEmail$ = (email:string) => db.query(`SELECT * FROM meetings.users WHERE email = '${email}'`);
+
+export const isAdmin$ = (email:string) => db.query(`SELECT * FROM meetings.users WHERE "isAdmin" = true and email = '${email}'`);

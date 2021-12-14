@@ -3,6 +3,8 @@ import { ExpressErrorMiddlewareInterface, Middleware } from 'routing-controllers
 const errors:Record<string, string> = {
   '23505': 'User already exists. Please change e-mail.',
   '420': 'Unknown user e-mail',
+  '423': 'You are not an administrator',
+  '424': 'Unknown userEmail field',
   '421': 'Incorrect password',
   '422': 'User is unauthorized',
   '0': 'Server error, try to repeat your request later.'

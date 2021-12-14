@@ -27,13 +27,14 @@ export class UserController {
   @Post('/login')
   async login ( @Body() data: ILogin) {
     let correctPassword = false;
-    let currentUser:IReg = {};
 
-    try {
-      currentUser = await firstValueFrom(userByEmail$(data.email));
-    } catch (e) {
+
+    const currentUser:IReg|undefined = await firstValueFrom(userByEmail$(data.email), { defaultValue: undefined });
+
+    if (!currentUser) {
       throw new Error('420');
     }
+
     correctPassword = await argon2.verify(currentUser.password, data.password);
 
     if (!correctPassword) {

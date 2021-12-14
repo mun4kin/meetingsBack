@@ -18,12 +18,7 @@ export class MeetingController {
   @UseBefore(Authentication)
   async getMeetings () {
     const user = httpContext.get('userId');
-    let result = [];
-    try {
-      result = await lastValueFrom(meetings$(user));
-    } catch (e) {}
-    return result;
-
+    return await lastValueFrom(meetings$(user), { defaultValue: [] });
   }
   @Post('/create')
   @UseBefore(Authentication)

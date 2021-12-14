@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "start": "node .",
+    "start": "node  ./index.js",
     "watch": "ts-node-dev --respawn --transpile-only src/index.ts",
     "commit": "git add . && node ./node_modules/cz-customizable/standalone.js"
   },

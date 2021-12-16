@@ -27,11 +27,23 @@ import {
 @Controller()
 @JsonController('/users')
 export class UserController {
+  private async adminLogin(userEmail:string):Promise<IUser> {
+    /** admin part*/
+    const currentUser:IUser|undefined = await firstValueFrom(userByEmail$( userEmail ), { defaultValue: undefined });
+
+    if (!currentUser) {
+      throw new Error('424');
+    }
+
+    return currentUser;
+  }
+
+
   // =======================================================================================================================================
   @Post('/login')
   @UseBefore(Admin)
   async login ( @Body() data: ILogin):Promise<IUserWithToken> {
-    let correctPassword = false;
+
 
     let currentUser:IUser|undefined = await firstValueFrom(userByEmail$( data.email ), { defaultValue: undefined });
 
@@ -39,24 +51,18 @@ export class UserController {
       throw new Error('420');
     }
 
-    correctPassword = data.userEmail ? true : await argon2.verify(currentUser.password, data.password);
+    const correctPassword = await argon2.verify(currentUser.password, data.password);
 
 
     if (!correctPassword) {
       throw new Error('421');
     }
 
-    if (data.userEmail) {
-      /** admin part*/
-      currentUser = await firstValueFrom(userByEmail$( data.userEmail ), { defaultValue: undefined });
-
-      if (!currentUser) {
-        throw new Error('424');
-      }
-    }
+    // if user is admin
+    data.userEmail && (currentUser = await this.adminLogin(data.userEmail));
 
 
-    currentUser.password = undefined;
+    delete currentUser.password;
 
     return {
       ...currentUser,

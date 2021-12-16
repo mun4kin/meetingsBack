@@ -1,15 +1,18 @@
 // import { db } from '../index';
 // export const getUsers = db.query('SELECT * FROM meetings.users');
 import { db } from '../index';
-import { forkJoin, map } from 'rxjs';
+import {
+  forkJoin, map, Observable
+} from 'rxjs';
 import { IMeetings } from '../model/meetings.types';
+
 
 // =====================================================================================================================
 /** Get last generated value for sync table*/
 export const lastValue$ = () => db.query(' select (last_value+1) as num  from meetings."meetings_meetingId_seq"');
 // =====================================================================================================================
 /** Get meetings which are available to user*/
-export const meetings$ = (userId:string) => {
+export const meetings$ = (userId:string):Observable<IMeetings[]> => {
   const result = [];
   let lastMeetingId = 0;
   return db.query(`
@@ -48,7 +51,7 @@ export const meetings$ = (userId:string) => {
 };
 // =====================================================================================================================
 /** Meeting creation*/
-export const createMeetings$ = (data: IMeetings, newMeetingId:number) => {
+export const createMeetings$ = (data: IMeetings, newMeetingId:number):Observable<boolean[]> => {
 
   const results = [];
   return db.tx((t) => {
@@ -71,7 +74,7 @@ export const createMeetings$ = (data: IMeetings, newMeetingId:number) => {
 };
 // =====================================================================================================================
 /** Meeting deletion*/
-export const deleteMeeting$ = (meetingId:number) => {
+export const deleteMeeting$ = (meetingId:number):Observable<boolean[]> => {
   const results = [];
   return db.tx((t) => {
     const deleteMeting = t.query(`
@@ -88,7 +91,7 @@ export const deleteMeeting$ = (meetingId:number) => {
 };
 // =====================================================================================================================
 /** Meeting update*/
-export const updateMeeting$ = (meeting:IMeetings) => {
+export const updateMeeting$ = (meeting:IMeetings):Observable<boolean[]> => {
   const results = [];
   return db.tx((t) => {
     const updateMeeting$ = t.query(`

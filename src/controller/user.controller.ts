@@ -3,17 +3,20 @@ import {
   Controller, JsonController, Post, UseBefore
 } from 'routing-controllers';
 import 'reflect-metadata';
-import { IReg } from '../model/registration.types';
+
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import {
   allUsers$, registration$, userByEmail$
 } from '../db/user.db';
 import * as argon2 from 'argon2';
-import { ILogin } from '../model/login.types';
+
 import * as jwt from 'jsonwebtoken';
 import { Authentication } from '../middleware/midAuthentication';
 import httpContext from 'express-http-context';
 import { Admin } from '../middleware/midAdmin';
+import {
+  ILogin, IRegUser, IUser, IUserWithToken, TSearchUsers
+} from '../model/user.types';
 /**
  * @swagger
  * tags:
@@ -27,10 +30,10 @@ export class UserController {
   // =======================================================================================================================================
   @Post('/login')
   @UseBefore(Admin)
-  async login ( @Body() data: ILogin) {
+  async login ( @Body() data: ILogin):Promise<IUserWithToken> {
     let correctPassword = false;
 
-    let currentUser:IReg|undefined = await firstValueFrom(userByEmail$( data.email ), { defaultValue: undefined });
+    let currentUser:IUser|undefined = await firstValueFrom(userByEmail$( data.email ), { defaultValue: undefined });
 
     if (!currentUser) {
       throw new Error('420');
@@ -63,14 +66,14 @@ export class UserController {
   }
   // =======================================================================================================================================
   @Post('/registration')
-  async registration( @Body() data: IReg) {
+  async registration( @Body() data: IRegUser):Promise<boolean> {
     const passwordHashed = await argon2.hash(data.password);
-    return await firstValueFrom(registration$(data, passwordHashed));
+    return !!await lastValueFrom(registration$(data, passwordHashed));
   }
   // =======================================================================================================================================
   @Post('/all')
   @UseBefore(Authentication)
-  async sendAll( @Body() data: { search:string}) {
+  async sendAll( @Body() data: { search:string}):Promise<TSearchUsers[]> {
     if (!data.search) {
       return [];
     }
@@ -79,7 +82,7 @@ export class UserController {
   }
   // =======================================================================================================================================
 
-  private static generateJWT(user: ILogin) {
+  private static generateJWT(user: IUser):string {
     const data = {
       userId: user.userId,
       email: user.email
@@ -87,6 +90,6 @@ export class UserController {
     const signature = 'super_strong_password';
     const expiration = '6h';
 
-    return jwt.sign({ data, }, signature, { expiresIn: expiration });
+    return jwt.sign({ data }, signature, { expiresIn: expiration });
   }
 }

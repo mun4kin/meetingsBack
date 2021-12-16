@@ -11,12 +11,13 @@ import { Authentication } from '../middleware/midAuthentication';
 import httpContext from 'express-http-context';
 import { IMeetings } from '../model/meetings.types';
 
+
 @Controller()
 @JsonController('/meeting')
 export class MeetingController {
   @Get('/all')
   @UseBefore(Authentication)
-  async getMeetings () {
+  async getMeetings ():Promise<IMeetings[]> {
     const user = httpContext.get('userId');
     return await lastValueFrom(meetings$(user), { defaultValue: [] });
   }

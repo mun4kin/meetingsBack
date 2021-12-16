@@ -1,11 +1,10 @@
-import { IReg } from './registration.types';
 
-export interface IMeetings {
-  meetingId:number;
-  name:string
-  datetime:number
-  time?:string
-  date?:string
-  description:string
-  users:IReg[]
+import { IMeetingsUser } from './user.types';
+
+export class IMeetings {
+  datetime: number;
+  description: string;
+  meetingId: number;
+  name: string;
+  users:IMeetingsUser[];
 }

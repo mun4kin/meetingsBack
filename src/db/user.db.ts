@@ -1,10 +1,12 @@
 
 import { db } from '../index';
-import { IReg } from '../model/registration.types';
-import { map } from 'rxjs';
+
+import { map, Observable } from 'rxjs';
+import { IRegUser, TSearchUsers } from '../model/user.types';
+
 // =====================================================================================================================
 /** Get all available users  for adding to meeting, limit 4 is threshold*/
-export const allUsers$ = (search, me) => {
+export const allUsers$ = (search:string, me:number):Observable<TSearchUsers[]> => {
   const users = [];
   return db.query(`
     SELECT "firstName","secondName",email,photo,"userId" FROM meetings.users
@@ -18,7 +20,7 @@ export const allUsers$ = (search, me) => {
 };
 // =====================================================================================================================
 /** New user registration */
-export const registration$ = (user:IReg, pass:string) => db.tx((t) => {
+export const registration$ = (user:IRegUser, pass:string):Observable<boolean[]> => db.tx((t) => {
   return t.query(`
     INSERT INTO meetings.users ("email", "firstName", "secondName","password","photo") 
     VALUES ('${user.email}','${user.firstName}','${user.secondName}','${pass}',

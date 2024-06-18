@@ -18,13 +18,15 @@ export class MeetingController {
   @Get('/all')
   @UseBefore(Authentication)
   async getMeetings ():Promise<IMeetings[]> {
+    console.log("getMeetings")
     const user = httpContext.get('userId');
+    console.log(user)
     return await lastValueFrom(meetings$(user), { defaultValue: [] });
   }
   @Post('/create')
   @UseBefore(Authentication)
   async createMeetings (@Body() data: IMeetings) {
-    const newMeeting:any = await lastValueFrom(lastValue$());
+    const newMeeting = await lastValueFrom(lastValue$());
     return await lastValueFrom(createMeetings$(data, newMeeting['num']));
   }
   @Post('/delete')

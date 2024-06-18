@@ -1,4 +1,5 @@
 import { ExpressErrorMiddlewareInterface, Middleware } from 'routing-controllers';
+import {Response,Request} from "express";
 
 const errors:Record<string, string> = {
   '23505': 'User already exists. Please change e-mail.',
@@ -13,7 +14,7 @@ const errors:Record<string, string> = {
 
 @Middleware({ type: 'after' })
 export class GlobalErrorHandler implements ExpressErrorMiddlewareInterface {
-  error (error: any, request: any, response: any, next: () => any) {
+  error (error: Error&{detail?:string,code?:number}, request: Request, response: Response, next: () => void) {
     const frontendText = errors[error.code] || errors[error.message] || errors[0];
 
     const t = !isNaN(+error.message) ? +error.message : 500;

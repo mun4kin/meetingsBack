@@ -80,6 +80,7 @@ export class UserController {
   @Post('/all')
   @UseBefore(Authentication)
   async sendAll( @Body() data: { search:string}):Promise<TSearchUsers[]> {
+    console.log("data",data)
     if (!data.search) {
       return [];
     }

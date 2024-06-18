@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://meetings-back-new.herokuapp.com/"
+      "url": "https://meetingsback.onrender.com/"
     },
     {
       "url": "http://localhost:5000"

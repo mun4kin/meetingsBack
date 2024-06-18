@@ -17,11 +17,11 @@ const port = process.env.PORT || 3000;
 // =====================================================================================================================
 /** db connection*/
 export const db = new PgRx({
-  host: 'ec2-54-246-85-151.eu-west-1.compute.amazonaws.com',
-  database: 'derbn5lnj0iukq',
-  user: 'uxggkygkspduiy',
+  host: 'dpg-cpor4b2ju9rs738undo0-a.oregon-postgres.render.com',
+  database: 'portfolio_meetings_db',
+  user: 'portfolio_meetings_db_user',
   port: 5432,
-  password: 'cf927aeab131cedb1e20b3f748f5644e33bf471ca54b503423244e7fcef94898',
+  password: 'gCtWs84simOgv7QIiZ8eOoJegfIw25eu',
   ssl: { rejectUnauthorized: false }
 });
 // =====================================================================================================================
